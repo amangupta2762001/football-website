@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player Details</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Football Website</h1>
+        <nav>
+            <a href="{{ url_for('index') }}">Players</a> |
+            <a href="{{ url_for('teams') }}">Teams</a>
+        </nav>
+    </header>
+    <main>
+        <h2>{{ player.name }}</h2>
+        <div class="player-details">
+            <p><strong>Position:</strong> {{ player.position }}</p>
+            <p><strong>Team:</strong> {{ player.team.name }} ({{ player.team.country }})</p>
+            {% if player.team.logo %}
+                <img src="{{ url_for('static', filename='uploads/' + player.team.logo) }}" alt="{{ player.team.name }} logo" class="logo">
+            {% endif %}
+            <p><strong>Market Value:</strong> €{{ player.market_value }}</p>
+            <p><strong>Goals:</strong> {{ player.goals }}</p>
+            <p><strong>Assists:</strong> {{ player.assists }}</p>
+            <p><strong>Matches Played:</strong> {{ player.matches_played }}</p>
+            <p><a href="{{ url_for('edit_player', id=player.id) }}">Edit Player</a></p>
+            <p><a href="{{ url_for('index') }}">Back to Home</a></p>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teams</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Football Website</h1>
+        <nav>
+            <a href="{{ url_for('index') }}">Players</a> |
+            <a href="{{ url_for('teams') }}">Teams</a>
+        </nav>
+    </header>
+    <main>
+        <h2>Teams</h2>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <p class="{{ category }}">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <p><a href="{{ url_for('add_team') }}">Add New Team</a></p>
+        <ul class="team-list">
+            {% for team in teams %}
+                <li class="team-item">
+                    {% if team.logo %}
+                        <img src="{{ url_for('static', filename='uploads/' + team.logo) }}" alt="{{ team.name }} logo" class="logo">
+                    {% endif %}
+                    <span><a href="{{ url_for('team_details', id=team.id) }}">{{ team.name }}</a> ({{ team.country }})</span>
+                    <span class="actions">
+                        <a href="{{ url_for('edit_team', id=team.id) }}">[Edit]</a>
+                        <a href="{{ url_for('delete_team', id=team.id) }}" onclick="return confirm('Are you sure you want to delete {{ team.name }}?')">[Delete]</a>
+                    </span>
+                </li>
+            {% endfor %}
+        </ul>
+    </main>
+</body>
+</html>

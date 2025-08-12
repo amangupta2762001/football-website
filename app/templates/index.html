@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Football Website</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Welcome to Football Website</h1>
+        <nav>
+            <a href="{{ url_for('index') }}">Players</a> |
+            <a href="{{ url_for('teams') }}">Teams</a>
+        </nav>
+    </header>
+    <main>
+        <h2>Players</h2>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <p class="{{ category }}">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <form method="POST" action="{{ url_for('search') }}" class="search-form">
+            <input type="text" name="query" placeholder="Search by player, team, or position" value="{{ query or '' }}">
+            <button type="submit">Search</button>
+        </form>
+        <div class="sort-buttons">
+            <span>Sort by:</span>
+            <a href="{{ url_for('index', sort_by='name', sort_order='asc' if sort_by == 'name' and sort_order == 'desc' else 'desc') }}">
+                Name {{ '↑' if sort_by == 'name' and sort_order == 'asc' else '↓' }}
+            </a>
+            <a href="{{ url_for('index', sort_by='market_value', sort_order='asc' if sort_by == 'market_value' and sort_order == 'desc' else 'desc') }}">
+                Market Value {{ '↑' if sort_by == 'market_value' and sort_order == 'asc' else '↓' }}
+            </a>
+            <a href="{{ url_for('index', sort_by='goals', sort_order='asc' if sort_by == 'goals' and sort_order == 'desc' else 'desc') }}">
+                Goals {{ '↑' if sort_by == 'goals' and sort_order == 'asc' else '↓' }}
+            </a>
+        </div>
+        <p><a href="{{ url_for('add_player') }}">Add New Player</a></p>
+        <ul class="player-list">
+            {% if players %}
+                {% for player in players %}
+                    <li class="player-item">
+                        <span><a href="{{ url_for('player_details', id=player.id) }}">{{ player.name }}</a> ({{ player.position }}) - {{ player.team.name }} - €{{ player.market_value }} | Goals: {{ player.goals }} | Assists: {{ player.assists }} | Matches: {{ player.matches_played }}</span>
+                        <span class="actions">
+                            <a href="{{ url_for('edit_player', id=player.id) }}">[Edit]</a>
+                            <a href="{{ url_for('delete_player', id=player.id) }}" onclick="return confirm('Are you sure you want to delete {{ player.name }}?')">[Delete]</a>
+                        </span>
+                    </li>
+                {% endfor %}
+            {% else %}
+                <p>No players found.</p>
+            {% endif %}
+        </ul>
+    </main>
+</body>
+</html>
