@@ -4,3 +4,4 @@ SQLAlchemy==2.0.32
 psycopg2-binary==2.9.9
 gunicorn==23.0.0
 werkzeug==3.0.4
+netlify-lambda==0.2.1
