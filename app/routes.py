@@ -8,7 +8,7 @@ import time
 bp = Blueprint('main', __name__)
 
 def init_routes(app):
-    app.register_blueprint(bp, url_prefix='/api')
+    app.register_blueprint(bp)
 
 @bp.route('/')
 def index():

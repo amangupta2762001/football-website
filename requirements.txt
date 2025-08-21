@@ -3,4 +3,3 @@ Flask-SQLAlchemy==3.1.1
 SQLAlchemy==2.0.32
 gunicorn==23.0.0
 werkzeug==3.0.4
-serverless-wsgi==3.0.3
